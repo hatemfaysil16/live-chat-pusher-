@@ -9,28 +9,35 @@ use Illuminate\Support\Facades\Auth;
 
 class chatController extends Controller
 {
+
     public function chat()
     {
         return view('chat');
     }
 
+
+
     public function send(request $request)
     {
-
-        
         $user= User::find(Auth::id());
-
-
+        $this->saveToSession($request);
         event(new chatEvent($request->message,$user));
     }
 
-    // public function send(Request $request)
-    // {
-    //     $user= User::find(Auth::id());
+    public function saveToSession(request $request)
+    {
+        session()->put('chat',$request->chat);
+    }
 
-    //     $message=  $request->all();
+    public function getOldMessage()
+    {
+       return session('chat');
 
-    //     event(new chatEvent($message,$user));
-    // }
+    }
+
+   public function deleteSession()
+   {
+        return session()->forget('chat');
+   }
 
 }

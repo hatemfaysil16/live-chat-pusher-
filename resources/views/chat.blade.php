@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     <style>
@@ -14,26 +16,35 @@
             height: 200px;
         }
     </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"  crossorigin="anonymous">
+
 </head>
 <body>
-    
+
 
     <div class="container" >
         <div class="row" id="app">
 
-            <div class="offset-4 col-4">
-                <li class="list-group-item active">chat Room</li>
-
+            <div class="offset-4 col-4 offset-sm-1 col-sm-10">
+                <li class="list-group-item active">chat Room
+                    <span class="badge badge-pill badge-danger">@{{ numberOfUsers }}</span></li>
+                <div class="badge badge-pill badge-primary">@{{ typing }}</div>
                 <ul class="list-group" v-chat-scroll>
-                    <message 
-                    v-for="value in chat.message"
+                    <message
+                    v-for="value ,index in chat.message"
                     :key=value.index
-                    color='success'>
-                @{{ value }}</message>
+                    :color=chat.color[index]
+                    :user = chat.user[index]
+                    :time = chat.time[index]>
+
+                        @{{ value }}</message>
                 </ul>
                     <input type="text" class="form-control"
                      placeholder="type here ..." v-model='message' @keyup.enter='send'>
-    
+
+                <br>
+                <a href="" class="btn btn-warning btn-sm" @click="deleteSession">Delete Chats</a>
+
 
             </div>
 
@@ -49,13 +60,16 @@
 
     <script src="{{ mix('js/app.js') }}"></script>
 
-    
+    <style>
+        #time{
+            font-size:8px;
+            margin-top: 10px;
+            color: black;
+
+        }
+    </style>
+
 
 
 </body>
 </html>
-
-{{-- <li class="list-group-item">Dapibus ac facilisis</li>
-<li class="list-group-item">Morbi leo risus</li>
-<li class="list-group-item">porta ac consectetur</li>
-<li class="list-group-item">Vestibulum at eros</li> --}}

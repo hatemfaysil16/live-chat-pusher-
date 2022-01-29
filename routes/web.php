@@ -15,17 +15,39 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::group(
+    [
+        'middleware' => 'auth',
+    ], function() { //...
+
+
+
+    Route::get('/', function () {
+        return view('welcome');
+    });
+
+    Route::get('chat', [chatController::class,'chat']);
+
+    Route::post('send', [chatController::class,'send']);
+
+    Route::post('saveToSession', [chatController::class,'saveToSession']);
+
+    Route::post('getOldMessages', [chatController::class,'getOldMessage']);
+
+
+    Route::post('deleteSession', [chatController::class,'deleteSession']);
+
+
+    Route::get('check',function(){
+        return session('chat');
+    });
+
+
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
 });
 
-Route::get('chat', [chatController::class,'chat']);
-
-Route::post('send', [chatController::class,'send']);
-
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
-
